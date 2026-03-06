@@ -6,13 +6,18 @@ public class ChangeColor : MonoBehaviour
     [Header("Componentes")]
     public GameObject Modelo;
     public Color color;
-    public Material colorMaterial;
+    public Material[] colorMaterialBody;
 
     public void CambiarColor()
     {
         Debug.Log("Cambiando color...");
+        
         //Modelo.GetComponent<Renderer>().material.color = color;
-        colorMaterial.color = color;
+        
+        for (int i = 0; i < colorMaterialBody.Length; i++)
+        {
+            colorMaterialBody[i].color = color;
+        }
     }
 
     public void CambiarColorAleatorio()
@@ -26,6 +31,10 @@ public class ChangeColor : MonoBehaviour
         Color colorRandom = new Color(red, green, blue);
 
         //Modelo.GetComponent<Renderer>().material.color = colorRandom;
-        colorMaterial.color = colorRandom;
+        
+        for (int i = 0; i < colorMaterialBody.Length; i++)
+        {
+            colorMaterialBody[i].color = colorRandom;
+        }
     }
 }
