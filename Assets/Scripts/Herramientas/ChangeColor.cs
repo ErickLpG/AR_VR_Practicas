@@ -11,9 +11,7 @@ public class ChangeColor : MonoBehaviour
     public void CambiarColor()
     {
         Debug.Log("Cambiando color...");
-        
-        //Modelo.GetComponent<Renderer>().material.color = color;
-        
+                
         for (int i = 0; i < colorMaterialBody.Length; i++)
         {
             colorMaterialBody[i].color = color;
@@ -29,12 +27,17 @@ public class ChangeColor : MonoBehaviour
         float blue = Random.Range(0f, 1f);
 
         Color colorRandom = new Color(red, green, blue);
-
-        //Modelo.GetComponent<Renderer>().material.color = colorRandom;
         
         for (int i = 0; i < colorMaterialBody.Length; i++)
         {
             colorMaterialBody[i].color = colorRandom;
+
+            // Volver a generar nuevos valores para el siguiente material
+            red = Random.Range(0f, 1f);
+            green = Random.Range(0f, 1f);
+            blue = Random.Range(0f, 1f);
+
+            colorRandom = new Color(red, green, blue);
         }
     }
 }
