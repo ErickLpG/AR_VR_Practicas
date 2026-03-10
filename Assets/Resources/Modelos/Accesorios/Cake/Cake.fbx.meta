@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9298dd5471e9b6d4e89af2f12825fcbf
+guid: ebc2640bb2249e147a6be4b50d481536
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Cake00
-    second: {fileID: 2100000, guid: 0a0d60fbbb8ddff46a88f95051dd2583, type: 2}
+    second: {fileID: 2100000, guid: cba98c294be8e684cb533447f28c493a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Cake01
-    second: {fileID: 2100000, guid: b1fd398623532bd4da7dcc90aa03689c, type: 2}
+    second: {fileID: 2100000, guid: 2361713b60282374199656b6f957c809, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -43,7 +43,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 10
+    globalScale: 20
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -101,7 +101,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 10
+    globalScale: 20
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

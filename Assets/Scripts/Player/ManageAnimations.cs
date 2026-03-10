@@ -3,7 +3,6 @@ using UnityEngine;
 public class ManageAnimations : MonoBehaviour
 {
     public Animator animator;
-    public ChangeAccesorio changeAccesorio;
 
     private int estadoActual = 0;
 
@@ -14,11 +13,6 @@ public class ManageAnimations : MonoBehaviour
 
     public void CambiarAnimacion()
     {
-        if (changeAccesorio != null)
-        {
-            changeAccesorio.OcultarTodos();
-        }
-
         estadoActual++;
 
         if (estadoActual > 2)

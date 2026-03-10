@@ -166,7 +166,7 @@ TextureImporter:
         width: 184
         height: 93
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -188,7 +188,7 @@ TextureImporter:
         width: 188
         height: 98
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -197,6 +197,94 @@ TextureImporter:
       bones: []
       spriteID: 004b23571ed87df4b9fe7d816d8b1b9b
       internalID: -819067864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wii - Internet Channel - Menus - Buttons_3
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 285
+        width: 74
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e33bf64f67d9f1449e81a64b9eacc11
+      internalID: -1688427987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wii - Internet Channel - Menus - Buttons_4
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 285
+        width: 74
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62d87210ab7f4bc41a5e889707a9bf87
+      internalID: -1883934639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wii - Internet Channel - Menus - Buttons_5
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 285
+        width: 74
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ace8d7e3d2ea6814b9a0d93fc5aeebd8
+      internalID: -1938219516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wii - Internet Channel - Menus - Buttons_6
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 9
+        width: 74
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dd9550b06bca8843a3fb0c63b228678
+      internalID: 1163328370
       vertices: []
       indices: 
       edges: []
@@ -222,6 +310,10 @@ TextureImporter:
       Wii - Internet Channel - Menus - Buttons_0: -1699054070
       Wii - Internet Channel - Menus - Buttons_1: -1335217886
       Wii - Internet Channel - Menus - Buttons_2: -819067864
+      Wii - Internet Channel - Menus - Buttons_3: -1688427987
+      Wii - Internet Channel - Menus - Buttons_4: -1883934639
+      Wii - Internet Channel - Menus - Buttons_5: -1938219516
+      Wii - Internet Channel - Menus - Buttons_6: 1163328370
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

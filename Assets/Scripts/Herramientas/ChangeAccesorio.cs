@@ -3,7 +3,6 @@ using UnityEngine;
 public class ChangeAccesorio : MonoBehaviour
 {
     public GameObject[] objetos;
-    public ManageAnimations manageAnimations;
 
     private int indiceActual = -1;
 
@@ -22,11 +21,6 @@ public class ChangeAccesorio : MonoBehaviour
         }
 
         ActualizarObjetos();
-
-        if (manageAnimations != null)
-        {
-            manageAnimations.SetIdle();
-        }
     }
 
     public void OcultarTodos()
