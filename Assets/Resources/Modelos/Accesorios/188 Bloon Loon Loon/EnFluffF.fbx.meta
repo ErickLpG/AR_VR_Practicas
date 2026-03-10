@@ -3,7 +3,27 @@ guid: 175e71208ab11ac488498fd17918e53e
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EnFace00
+    second: {fileID: 2100000, guid: 707326990822b9f4c9329868e5a96425, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EnFluffA00
+    second: {fileID: 2100000, guid: 65cd0f867234cd14d92b23fc1ab096b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EnFluffA01
+    second: {fileID: 2100000, guid: 0a0d60fbbb8ddff46a88f95051dd2583, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EnShadow
+    second: {fileID: 2100000, guid: 4574e858a6c749645b2dba6541452ebb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -91,7 +111,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.001
+    globalScale: 0.1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
