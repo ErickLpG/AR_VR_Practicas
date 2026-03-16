@@ -32,7 +32,6 @@ public class ChangeColor : MonoBehaviour
         {
             colorMaterialBody[i].color = colorRandom;
 
-            // Volver a generar nuevos valores para el siguiente material
             red = Random.Range(0f, 1f);
             green = Random.Range(0f, 1f);
             blue = Random.Range(0f, 1f);

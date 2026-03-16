@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class ChangeAccesorio : MonoBehaviour
 {
-    public GameObject[] objetos;
-
-    private int indiceActual = -1;
+    [Header("Accesorios")]
+    public GameObject[] accesorios;
 
     void Start()
     {
@@ -13,31 +12,23 @@ public class ChangeAccesorio : MonoBehaviour
 
     public void CambiarEstado()
     {
-        indiceActual++;
-
-        if (indiceActual >= objetos.Length)
-        {
-            indiceActual = -1; 
-        }
-
-        ActualizarObjetos();
+        int randomValue = Random.Range(0, accesorios.Length);
+        Actualizaraccesorios(randomValue);
     }
 
     public void OcultarTodos()
     {
-        indiceActual = -1;
-
-        for (int i = 0; i < objetos.Length; i++)
+        for (int i = 0; i < accesorios.Length; i++)
         {
-            objetos[i].SetActive(false);
+            accesorios[i].SetActive(false);
         }
     }
 
-    void ActualizarObjetos()
+    void Actualizaraccesorios(int randomValue)
     {
-        for (int i = 0; i < objetos.Length; i++)
+        for (int i = 0; i < accesorios.Length; i++)
         {
-            objetos[i].SetActive(i == indiceActual);
+            accesorios[i].SetActive(i == randomValue);
         }
     }
 }
