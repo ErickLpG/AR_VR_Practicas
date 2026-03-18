@@ -6,7 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Vuforia.unity
+    path: Assets/Scenes/1_Seleccion.unity
+    guid: 831d223c101d1e34e899d467cee34706
+  - enabled: 1
+    path: Assets/Scenes/2_Colores_y_Accesorios.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/3_Trayectoria.unity
+    guid: f170ca47c3012314b8f85810c3caceb8
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
