@@ -474,7 +474,7 @@ GameObject:
   - component: {fileID: 239609024}
   - component: {fileID: 239609023}
   - component: {fileID: 239609022}
-  - component: {fileID: 239609021}
+  - component: {fileID: 239609025}
   m_Layer: 0
   m_Name: ImageTarget_M2
   m_TagString: Untagged
@@ -482,25 +482,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &239609021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 239609020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
-  mObserverBehaviour: {fileID: 239609023}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: mii_en
-  mDatasetName: Vuforia/AR_Database.xml
-  mCastedBehaviour: {fileID: 239609023}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!114 &239609022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +552,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 239609021}
+  mPreview: {fileID: 239609025}
 --- !u!4 &239609024
 Transform:
   m_ObjectHideFlags: 0
@@ -588,6 +569,25 @@ Transform:
   - {fileID: 136852953}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &239609025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239609020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
+  mObserverBehaviour: {fileID: 239609023}
+  mHiddenRoot: {fileID: 0}
+  mTargetName: mii_en
+  mDatasetName: Vuforia/AR_Database.xml
+  mCastedBehaviour: {fileID: 239609023}
+  mMeshFilter: {fileID: 0}
+  mMeshRenderer: {fileID: 0}
 --- !u!1 &462099895
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,8 +727,8 @@ GameObject:
   - component: {fileID: 719213840}
   - component: {fileID: 719213839}
   - component: {fileID: 719213838}
-  - component: {fileID: 719213837}
   - component: {fileID: 719213841}
+  - component: {fileID: 719213842}
   m_Layer: 0
   m_Name: ImageTarget_Player
   m_TagString: Untagged
@@ -736,25 +736,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &719213837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719213836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
-  mObserverBehaviour: {fileID: 719213839}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: mii
-  mDatasetName: Vuforia/AR_Database.xml
-  mCastedBehaviour: {fileID: 719213839}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!114 &719213838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -825,7 +806,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 719213837}
+  mPreview: {fileID: 719213842}
 --- !u!4 &719213840
 Transform:
   m_ObjectHideFlags: 0
@@ -855,12 +836,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Move
   player: {fileID: 202416289}
+  playerTarget: {fileID: 719213839}
   ImageTargets:
   - {fileID: 973414814}
   - {fileID: 239609023}
   - {fileID: 1994488783}
   currentTarget: 0
   speed: 1
+--- !u!114 &719213842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719213836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
+  mObserverBehaviour: {fileID: 719213839}
+  mHiddenRoot: {fileID: 0}
+  mTargetName: mii
+  mDatasetName: Vuforia/AR_Database.xml
+  mCastedBehaviour: {fileID: 719213839}
+  mMeshFilter: {fileID: 0}
+  mMeshRenderer: {fileID: 0}
 --- !u!1 &863915034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,7 +1131,7 @@ GameObject:
   - component: {fileID: 973414815}
   - component: {fileID: 973414814}
   - component: {fileID: 973414813}
-  - component: {fileID: 973414812}
+  - component: {fileID: 973414816}
   m_Layer: 0
   m_Name: ImageTarget_M1
   m_TagString: Untagged
@@ -1138,25 +1139,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &973414812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973414811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
-  mObserverBehaviour: {fileID: 973414814}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: wii_shop
-  mDatasetName: Vuforia/AR_Database.xml
-  mCastedBehaviour: {fileID: 973414814}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!114 &973414813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1227,7 +1209,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 973414812}
+  mPreview: {fileID: 973414816}
 --- !u!4 &973414815
 Transform:
   m_ObjectHideFlags: 0
@@ -1244,6 +1226,25 @@ Transform:
   - {fileID: 162342945}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &973414816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973414811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
+  mObserverBehaviour: {fileID: 973414814}
+  mHiddenRoot: {fileID: 0}
+  mTargetName: wii_shop
+  mDatasetName: Vuforia/AR_Database.xml
+  mCastedBehaviour: {fileID: 973414814}
+  mMeshFilter: {fileID: 0}
+  mMeshRenderer: {fileID: 0}
 --- !u!1001 &1024165244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1849,7 +1850,7 @@ GameObject:
   - component: {fileID: 1994488784}
   - component: {fileID: 1994488783}
   - component: {fileID: 1994488782}
-  - component: {fileID: 1994488781}
+  - component: {fileID: 1994488785}
   m_Layer: 0
   m_Name: ImageTarget_M3
   m_TagString: Untagged
@@ -1857,25 +1858,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1994488781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994488780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
-  mObserverBehaviour: {fileID: 1994488783}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: wii_party
-  mDatasetName: Vuforia/AR_Database.xml
-  mCastedBehaviour: {fileID: 1994488783}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!114 &1994488782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1946,7 +1928,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 1994488781}
+  mPreview: {fileID: 1994488785}
 --- !u!4 &1994488784
 Transform:
   m_ObjectHideFlags: 0
@@ -1963,6 +1945,25 @@ Transform:
   - {fileID: 131584216}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1994488785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994488780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Vuforia.Unity.Engine.dll::Vuforia.ImageTargetPreview
+  mObserverBehaviour: {fileID: 1994488783}
+  mHiddenRoot: {fileID: 0}
+  mTargetName: wii_party
+  mDatasetName: Vuforia/AR_Database.xml
+  mCastedBehaviour: {fileID: 1994488783}
+  mMeshFilter: {fileID: 0}
+  mMeshRenderer: {fileID: 0}
 --- !u!1 &77272536576777640
 GameObject:
   m_ObjectHideFlags: 0

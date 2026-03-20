@@ -6,8 +6,9 @@ public class Move : MonoBehaviour
 {
     [Header("Componentes principales")]
     public GameObject player;
+    public ObserverBehaviour playerTarget;
     public ObserverBehaviour[] ImageTargets;
-    public int currentTarget;
+    public int currentTarget = 0;
     public float speed = 1.0f;
     private bool isMoving = false;
 
@@ -82,8 +83,11 @@ public class Move : MonoBehaviour
     {
         foreach(ObserverBehaviour target in ImageTargets)
         {
-            if(target != null && (target.TargetStatus.Status == Status.TRACKED || target.TargetStatus.Status == Status.EXTENDED_TRACKED))
+            if(target != null &&
+            (target.TargetStatus.Status == Status.TRACKED/*||
+            target.TargetStatus.Status == Status.EXTENDED_TRACKED*/))
             {
+                Debug.Log($"Target detectado: {target.TargetName}");
                 return target;
             }
         }
