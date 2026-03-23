@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
   <Tracking>
+    <ImageTarget name="boss" size="1.000000 1.000000" />
+    <ImageTarget name="mii_en" size="1.000000 1.000000" />
     <ImageTarget name="wii_shop" size="1.000000 1.000000" />
     <ImageTarget name="wii_party" size="1.000000 1.000000" />
-    <ImageTarget name="mii_en" size="1.000000 1.000000" />
+    <ImageTarget name="armadura" size="1.000000 1.000000" />
     <ImageTarget name="mii" size="1.000000 1.000000" />
   </Tracking>
 </QCARConfig>
