@@ -8,8 +8,7 @@ public class Move : MonoBehaviour
     public GameObject player;
     public ObserverBehaviour playerTarget;
 
-    // Targets de destino,
-    public ObserverBehaviour[] ImageTargets;
+    public ObserverBehaviour[] ImageTargets;     // Targets de destino
 
     public int currentTarget = 0;
     public float speed = 1.0f;
@@ -19,14 +18,11 @@ public class Move : MonoBehaviour
     private Animator animator;
 
     [Header("Rotación")]
-    // Nueva velocidad para rotar suavemente hacia el objetivo.
     public float rotationSpeed = 5.0f;
+    //private bool returningToPlayerTarget = false;
 
-    // Indica si ya terminó de recorrer los destinos y debe volver al target original.
-    private bool returningToPlayerTarget = false;
-
-    // Guardamos el target al que se está moviendo actualmente.
     private ObserverBehaviour currentMoveTarget = null;
+    private ObserverBehaviour lastDetectedTarget = null;
 
     #region Métodos Unity
     void Start()
@@ -36,10 +32,25 @@ public class Move : MonoBehaviour
             animator = player.GetComponent<Animator>();
         }
     }
+
+    void Update()
+    {
+        // Si está en movimiento, no hacer nada
+        if (isMoving) return;
+
+        ObserverBehaviour detected = GetDetectedTarget();
+
+        // Si detecta uno nuevo distinto al anterior
+        if (detected != null && detected != lastDetectedTarget)
+        {
+            lastDetectedTarget = detected;
+            StartCoroutine(MoveModel(detected));
+        }
+    }
     #endregion
 
     #region Movimiento
-
+    /*
     public void MoveButton()
     {
         // Si no se está moviendo, revisa si hay un nuevo target disponible.
@@ -62,13 +73,11 @@ public class Move : MonoBehaviour
             StartCoroutine(MoveModel());
         }
     }
+    */
 
-    private IEnumerator MoveModel()
+    private IEnumerator MoveModel(ObserverBehaviour target)
     {
         isMoving = true;
-
-        // Elegimos el target según la lógica de secuencia.
-        ObserverBehaviour target = GetNextDetectedTarget();
         currentMoveTarget = target;
 
         // Activar animación de movimiento
@@ -121,6 +130,7 @@ public class Move : MonoBehaviour
         // Aseguramos la posición final exacta.
         player.transform.position = endPosition;
 
+        /*
         // Si no está regresando al playerTarget, avanza al siguiente destino.
         if (!returningToPlayerTarget)
         {
@@ -138,7 +148,8 @@ public class Move : MonoBehaviour
             // Si ya regresó al target original, termina el ciclo.
             returningToPlayerTarget = false;
         }
-
+        */
+        
         // Desactivar animación de movimiento
         if (animator != null)
         {
@@ -148,6 +159,25 @@ public class Move : MonoBehaviour
         isMoving = false;
     }
 
+    private ObserverBehaviour GetDetectedTarget()
+    {
+        if (ImageTargets == null || ImageTargets.Length == 0)
+            return null;
+
+        foreach (var target in ImageTargets)
+        {
+            if (target != null &&
+                (target.TargetStatus.Status == Status.TRACKED ||
+                 target.TargetStatus.Status == Status.EXTENDED_TRACKED))
+            {
+                return target;
+            }
+        }
+
+        return null;
+    }
+    
+    /*
     private ObserverBehaviour GetNextDetectedTarget()
     {
         // Si estamos en la fase de regreso, intentamos volver al playerTarget.
@@ -183,5 +213,6 @@ public class Move : MonoBehaviour
         }
         return null;
     }
+    */
     #endregion
 }
