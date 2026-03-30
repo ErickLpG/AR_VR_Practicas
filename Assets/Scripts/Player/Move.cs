@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Vuforia;
 
@@ -6,97 +7,91 @@ public class Move : MonoBehaviour
 {
     [Header("Componentes principales")]
     public GameObject player;
-    public ObserverBehaviour playerTarget;
+    public ObserverBehaviour[] ImageTargets;
+    public Transform cameraTarget;
+    public EventManger eventManger;
 
-    public ObserverBehaviour[] ImageTargets;     // Targets de destino
-
-    public int currentTarget = 0;
+    [Header("Configuración movimiento")]
     public float speed = 1.0f;
-    private bool isMoving = false;
-
-    [Header("Componentes para animación")]
-    private Animator animator;
-
-    [Header("Rotación")]
     public float rotationSpeed = 5.0f;
-    //private bool returningToPlayerTarget = false;
+    public float delayAntesDeMover = 2.0f;
+    public float duracionGiroFinal = 0.5f;
 
-    private ObserverBehaviour currentMoveTarget = null;
+    private bool isMoving = false;
+    private bool esperandoMovimiento = false;
+
+    private Animator animator;
+    private bool primerTargetAsignado = false;
     private ObserverBehaviour lastDetectedTarget = null;
 
-    #region Métodos Unity
+    private int visitasCompletadas = 0;
+
+    private HashSet<ObserverBehaviour> targetsVisitados = new HashSet<ObserverBehaviour>();
+
     void Start()
     {
         if (player != null)
-        {
             animator = player.GetComponent<Animator>();
-        }
+
+        if (cameraTarget == null && Camera.main != null)
+            cameraTarget = Camera.main.transform;
     }
 
     void Update()
     {
-        // Si está en movimiento, no hacer nada
-        if (isMoving) return;
+        if (isMoving || esperandoMovimiento)
+            return;
 
         ObserverBehaviour detected = GetDetectedTarget();
 
-        // Si detecta uno nuevo distinto al anterior
-        if (detected != null && detected != lastDetectedTarget)
+        if (detected != null)
         {
-            lastDetectedTarget = detected;
-            StartCoroutine(MoveModel(detected));
-        }
-    }
-    #endregion
-
-    #region Movimiento
-    /*
-    public void MoveButton()
-    {
-        // Si no se está moviendo, revisa si hay un nuevo target disponible.
-        if (!isMoving)
-        {
-            ObserverBehaviour nextTarget = GetNextDetectedTarget();
-
-            // Si hay un target válido y es diferente al actual, inicia movimiento.
-            if (nextTarget != null)
+            if (!primerTargetAsignado)
             {
-                moveToNextMarker();
+                primerTargetAsignado = true;
+                lastDetectedTarget = detected;
+                StartCoroutine(EsperarYMover(detected));
+                return;
+            }
+
+            if (detected != lastDetectedTarget && !targetsVisitados.Contains(detected))
+            {
+                lastDetectedTarget = detected;
+                StartCoroutine(EsperarYMover(detected));
             }
         }
     }
 
-    public void moveToNextMarker()
+    IEnumerator EsperarYMover(ObserverBehaviour target)
     {
-        if (!isMoving)
-        {
-            StartCoroutine(MoveModel());
-        }
+        esperandoMovimiento = true;
+
+        Debug.Log("Target detectado, esperando antes de moverse...");
+
+        yield return new WaitForSeconds(delayAntesDeMover);
+
+        esperandoMovimiento = false;
+
+        yield return StartCoroutine(MoveModel(target));
     }
-    */
 
     private IEnumerator MoveModel(ObserverBehaviour target)
     {
         isMoving = true;
-        currentMoveTarget = target;
 
-        // Activar animación de movimiento
         if (animator != null)
-        {
             animator.SetBool("isMoving", true);
-        }
 
         if (target == null)
         {
-            // Apagamos animación también si no hay target.
             if (animator != null)
-            {
                 animator.SetBool("isMoving", false);
-            }
 
             isMoving = false;
             yield break;
         }
+
+        player.transform.SetParent(null, true);
 
         Vector3 startPosition = player.transform.position;
         Vector3 endPosition = target.transform.position;
@@ -107,13 +102,10 @@ public class Move : MonoBehaviour
         {
             journey += Time.deltaTime * speed;
 
-            // Movimiento
             player.transform.position = Vector3.Lerp(startPosition, endPosition, journey);
 
-            // Rotar al player hacia la dirección del objetivo mientras se mueve.
             Vector3 direction = (endPosition - player.transform.position).normalized;
 
-            // Evita errores si la dirección es muy pequeña.
             if (direction != Vector3.zero)
             {
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -127,36 +119,75 @@ public class Move : MonoBehaviour
             yield return null;
         }
 
-        // Aseguramos la posición final exacta.
         player.transform.position = endPosition;
+        player.transform.SetParent(target.transform, true);
 
-        /*
-        // Si no está regresando al playerTarget, avanza al siguiente destino.
-        if (!returningToPlayerTarget)
-        {
-            currentTarget++;
-
-            // Si ya terminó todos los destinos, ahora regresa al target original del player.
-            if (currentTarget >= ImageTargets.Length)
-            {
-                currentTarget = 0;
-                returningToPlayerTarget = true;
-            }
-        }
-        else
-        {
-            // Si ya regresó al target original, termina el ciclo.
-            returningToPlayerTarget = false;
-        }
-        */
-        
-        // Desactivar animación de movimiento
         if (animator != null)
-        {
             animator.SetBool("isMoving", false);
-        }
+
+        targetsVisitados.Add(target);
+
+        yield return StartCoroutine(RotarHaciaCamara());
+
+        visitasCompletadas++;
+        EjecutarEventoPorVisita();
 
         isMoving = false;
+    }
+
+    private void EjecutarEventoPorVisita()
+    {
+        Debug.Log("Visitas completadas: " + visitasCompletadas);
+
+        if (visitasCompletadas == 1)
+        {
+            Debug.Log("Primera visita: inicio de la aventura.");
+            return;
+        }
+
+        if (visitasCompletadas >= 2 && visitasCompletadas <= 4)
+        {
+            if (eventManger != null)
+                eventManger.AbrirSiguienteMinijuego();
+
+            return;
+        }
+
+        if (visitasCompletadas == 5)
+        {
+            if (eventManger != null)
+                eventManger.MostrarDespedida();
+
+            return;
+        }
+    }
+
+    private IEnumerator RotarHaciaCamara()
+    {
+        if (player == null || cameraTarget == null)
+            yield break;
+
+        Vector3 direccion = cameraTarget.position - player.transform.position;
+        direccion.y = 0f;
+
+        if (direccion.sqrMagnitude <= 0.0001f)
+            yield break;
+
+        Quaternion rotacionInicial = player.transform.rotation;
+        Quaternion rotacionFinal = Quaternion.LookRotation(direccion.normalized);
+
+        float tiempo = 0f;
+
+        while (tiempo < duracionGiroFinal)
+        {
+            tiempo += Time.deltaTime;
+            float t = tiempo / duracionGiroFinal;
+
+            player.transform.rotation = Quaternion.Slerp(rotacionInicial, rotacionFinal, t);
+            yield return null;
+        }
+
+        player.transform.rotation = rotacionFinal;
     }
 
     private ObserverBehaviour GetDetectedTarget()
@@ -166,9 +197,12 @@ public class Move : MonoBehaviour
 
         foreach (var target in ImageTargets)
         {
-            if (target != null &&
-                (target.TargetStatus.Status == Status.TRACKED ||
-                 target.TargetStatus.Status == Status.EXTENDED_TRACKED))
+            if (target == null)
+                continue;
+
+            if ((target.TargetStatus.Status == Status.TRACKED ||
+                 target.TargetStatus.Status == Status.EXTENDED_TRACKED) &&
+                 !targetsVisitados.Contains(target))
             {
                 return target;
             }
@@ -176,43 +210,4 @@ public class Move : MonoBehaviour
 
         return null;
     }
-    
-    /*
-    private ObserverBehaviour GetNextDetectedTarget()
-    {
-        // Si estamos en la fase de regreso, intentamos volver al playerTarget.
-        if (returningToPlayerTarget)
-        {
-            if (playerTarget != null &&
-                playerTarget.TargetStatus.Status == Status.TRACKED)
-            {
-                Debug.Log($"Regresando al playerTarget: {playerTarget.TargetName}");
-                return playerTarget;
-            }
-
-            Debug.Log("playerTarget no detectado, se continuará con ImageTargets");
-            returningToPlayerTarget = false;
-        }
-
-        // Si hay destinos, buscamos primero el actual según currentTarget.
-        if (ImageTargets != null && ImageTargets.Length > 0)
-        {
-            // Recorremos circularmente desde currentTarget para encontrar el siguiente detectado.
-            for (int i = 0; i < ImageTargets.Length; i++)
-            {
-                int index = (currentTarget + i) % ImageTargets.Length;
-                ObserverBehaviour target = ImageTargets[index];
-
-                if (target != null &&
-                    target.TargetStatus.Status == Status.TRACKED)
-                {
-                    Debug.Log($"Target detectado: {target.TargetName}");
-                    return target;
-                }
-            }
-        }
-        return null;
-    }
-    */
-    #endregion
 }

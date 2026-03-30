@@ -1,62 +1,70 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Vuforia;
 
-public class IntroHistoria : MonoBehaviour
+public class EventManger : MonoBehaviour
 {
     [Header("Referencias UI")]
     public UnityEngine.UI.Image panelNegro;
     public TextMeshProUGUI textoHistoria;
     public TextMeshProUGUI textoIndicacion;
-    public UnityEngine.UI.Image imagenGuia;
+    public Animator animator;
 
-    [Header("Target que activará el cambio")]
-    public ObserverBehaviour targetEscaneo;
+    [Header("Targets que pueden activar el cambio")]
+    public ObserverBehaviour[] targetsEscaneo;
 
     [Header("Textos")]
     [TextArea(3, 6)]
-    public string historia = "El mundo está en peligro.\nTú no puedes intervenir directamente en este lugar...\nPero puedes guiar a un héroe para salvarlo.";
+    public string historia = "Historia.";
 
-    public string indicacion = "Escanea la siguiente imagen con la cámara de tu celular";
-    public string textoDespuesDeEscaneo = "Bien. Has encontrado al héroe. Ahora guíalo hacia otro destino.";
+    [TextArea(2, 4)]
+    public string indicacion = "Escanea cualquiera de los marcadores para comenzar la aventura.";
+
+    [TextArea(2, 4)]
+    public string textoDespuesDeEscaneo = "Muy bien. Ahora acompaña al personaje en sus actividades del día.";
 
     [Header("Velocidades")]
     public float tiempoEntreLetras = 0.04f;
     public float esperaAntesDeFade = 1.2f;
     public float duracionFadePanel = 1.5f;
     public float duracionFadeIndicacion = 1f;
-    public float duracionFadeImagen = 1f;
 
     [Header("Configuración de detección")]
     public bool aceptarLimitedComoDetectado = true;
+
+    [Header("Minijuegos aleatorios")]
+    public GameObject[] panelesMinijuego;
+    private List<int> ordenMinijuegos = new List<int>();
+    private int indiceMinijuegoActual = 0;
+    private GameObject panelMinijuegoActivo = null;
 
     private bool listoParaEscanear = false;
     private bool yaSeDetecto = false;
 
     private void Start()
     {
-        panelNegro.gameObject.SetActive(true);
-
-        if (imagenGuia != null)
+        if (panelNegro != null)
         {
-            imagenGuia.gameObject.SetActive(true);
-            SetImageAlpha(imagenGuia, 0f);
+            panelNegro.gameObject.SetActive(true);
+            SetImageAlpha(panelNegro, 1f);
         }
 
         StartCoroutine(SecuenciaInicio());
+        PrepararOrdenMinijuegos();
+        CerrarTodosLosMinijuegos();
     }
 
     private void Update()
     {
-        if (!listoParaEscanear || yaSeDetecto || targetEscaneo == null)
+        if (!listoParaEscanear || yaSeDetecto)
             return;
 
-        if (TargetEstaDetectado(targetEscaneo.TargetStatus))
+        if (CualquierTargetDetectado())
         {
             yaSeDetecto = true;
-            StartCoroutine(OcultarImagenYCambiarTexto());
+            CambiarTextoDespuesDeEscaneo();
         }
     }
 
@@ -71,13 +79,8 @@ public class IntroHistoria : MonoBehaviour
             SetTextAlpha(textoIndicacion, 0f);
         }
 
-        if (panelNegro != null)
-            SetImageAlpha(panelNegro, 1f);
-
         yield return StartCoroutine(TypeWriter(historia));
-
         yield return new WaitForSeconds(esperaAntesDeFade);
-
         yield return StartCoroutine(FadeOutPanel());
 
         if (textoHistoria != null)
@@ -89,16 +92,14 @@ public class IntroHistoria : MonoBehaviour
             yield return StartCoroutine(FadeInText(textoIndicacion, duracionFadeIndicacion));
         }
 
-        if (imagenGuia != null)
-        {
-            yield return StartCoroutine(FadeInImage(imagenGuia, duracionFadeIndicacion));
-        }
-
         listoParaEscanear = true;
     }
 
     IEnumerator TypeWriter(string mensaje)
     {
+        if (textoHistoria == null)
+            yield break;
+
         textoHistoria.text = "";
 
         foreach (char letra in mensaje)
@@ -110,8 +111,10 @@ public class IntroHistoria : MonoBehaviour
 
     IEnumerator FadeOutPanel()
     {
-        float tiempo = 0f;
+        if (panelNegro == null || textoHistoria == null)
+            yield break;
 
+        float tiempo = 0f;
         Color colorPanel = panelNegro.color;
         Color colorTexto = textoHistoria.color;
 
@@ -133,6 +136,9 @@ public class IntroHistoria : MonoBehaviour
 
     IEnumerator FadeInText(TextMeshProUGUI texto, float duracion)
     {
+        if (texto == null)
+            yield break;
+
         float tiempo = 0f;
         Color colorBase = texto.color;
 
@@ -147,47 +153,27 @@ public class IntroHistoria : MonoBehaviour
         texto.color = new Color(colorBase.r, colorBase.g, colorBase.b, 1f);
     }
 
-    IEnumerator FadeInImage(UnityEngine.UI.Image imagen, float duracion)
+    bool CualquierTargetDetectado()
     {
-        float tiempo = 0f;
-        Color colorBase = imagen.color;
+        if (targetsEscaneo == null || targetsEscaneo.Length == 0)
+            return false;
 
-        while (tiempo < duracion)
+        for (int i = 0; i < targetsEscaneo.Length; i++)
         {
-            tiempo += Time.deltaTime;
-            float t = tiempo / duracion;
-            imagen.color = new Color(colorBase.r, colorBase.g, colorBase.b, Mathf.Lerp(0f, 1f, t));
-            yield return null;
+            ObserverBehaviour target = targetsEscaneo[i];
+
+            if (target == null)
+                continue;
+
+            if (TargetEstaDetectado(target.TargetStatus))
+                return true;
         }
 
-        imagen.color = new Color(colorBase.r, colorBase.g, colorBase.b, 1f);
+        return false;
     }
 
-    IEnumerator FadeOutImage(UnityEngine.UI.Image imagen, float duracion)
+    void CambiarTextoDespuesDeEscaneo()
     {
-        float tiempo = 0f;
-        Color colorBase = imagen.color;
-        float alphaInicial = imagen.color.a;
-
-        while (tiempo < duracion)
-        {
-            tiempo += Time.deltaTime;
-            float t = tiempo / duracion;
-            imagen.color = new Color(colorBase.r, colorBase.g, colorBase.b, Mathf.Lerp(alphaInicial, 0f, t));
-            yield return null;
-        }
-
-        imagen.color = new Color(colorBase.r, colorBase.g, colorBase.b, 0f);
-        imagen.gameObject.SetActive(false);
-    }
-
-    IEnumerator OcultarImagenYCambiarTexto()
-    {
-        if (imagenGuia != null && imagenGuia.gameObject.activeSelf)
-        {
-            yield return StartCoroutine(FadeOutImage(imagenGuia, duracionFadeImagen));
-        }
-
         if (textoIndicacion != null)
         {
             textoIndicacion.text = textoDespuesDeEscaneo;
@@ -207,13 +193,90 @@ public class IntroHistoria : MonoBehaviour
 
     void SetImageAlpha(UnityEngine.UI.Image imagen, float alpha)
     {
+        if (imagen == null)
+            return;
+
         Color c = imagen.color;
         imagen.color = new Color(c.r, c.g, c.b, alpha);
     }
 
     void SetTextAlpha(TextMeshProUGUI texto, float alpha)
     {
+        if (texto == null)
+            return;
+
         Color c = texto.color;
         texto.color = new Color(c.r, c.g, c.b, alpha);
+    }
+    
+    void PrepararOrdenMinijuegos()
+    {
+        ordenMinijuegos.Clear();
+
+        for (int i = 0; i < panelesMinijuego.Length; i++)
+        {
+            ordenMinijuegos.Add(i);
+        }
+
+        for (int i = 0; i < ordenMinijuegos.Count; i++)
+        {
+            int randomIndex = Random.Range(i, ordenMinijuegos.Count);
+            int temp = ordenMinijuegos[i];
+            ordenMinijuegos[i] = ordenMinijuegos[randomIndex];
+            ordenMinijuegos[randomIndex] = temp;
+        }
+
+        indiceMinijuegoActual = 0;
+    }
+
+    public void AbrirSiguienteMinijuego()
+    {
+        CerrarTodosLosMinijuegos();
+
+        if (panelesMinijuego == null || panelesMinijuego.Length == 0)
+            return;
+
+        if (indiceMinijuegoActual >= ordenMinijuegos.Count)
+        {
+            Debug.Log("Ya se usaron todos los minijuegos.");
+            return;
+        }
+
+        int indicePanel = ordenMinijuegos[indiceMinijuegoActual];
+        panelMinijuegoActivo = panelesMinijuego[indicePanel];
+
+        if (panelMinijuegoActivo != null)
+            panelMinijuegoActivo.SetActive(true);
+
+        indiceMinijuegoActual++;
+    }
+
+    public void FinalizarMinijuegoActual()
+    {
+        if (panelMinijuegoActivo != null)
+            panelMinijuegoActivo.SetActive(false);
+
+        panelMinijuegoActivo = null;
+    }
+
+    void CerrarTodosLosMinijuegos()
+    {
+        if (panelesMinijuego == null)
+            return;
+
+        for (int i = 0; i < panelesMinijuego.Length; i++)
+        {
+            if (panelesMinijuego[i] != null)
+                panelesMinijuego[i].SetActive(false);
+        }
+    }
+
+    public void MostrarDespedida()
+    {
+        CerrarTodosLosMinijuegos();
+        animator.SetBool("isDancing", true);
+        
+        if (textoIndicacion != null)
+            textoIndicacion.text = "Gracias por acompañar al personaje en su rutina de hoy. Si quieres repetir el día solo presiona el botón de reiniciar!";
     }
 }
